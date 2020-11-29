@@ -2,4 +2,4 @@ from crawler import crawler
 
 crawler = crawler("https://www.appstate.edu")
 crawler.startCrawling()
-crawler.writeMapFolder("map")
+crawler.writeErrors("errors.txt")

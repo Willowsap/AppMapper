@@ -3,9 +3,14 @@ import os
 class urlMap:
   def __init__(self):
     self.urls = []
+    self.errorUrls = []
 
   def addUrl(self, node):
     self.urls.append(node)
+    if len(node.getLinks()) > 0:
+      l = node.getLinks()[0]
+      if l[0:5] == "ERROR":
+        self.errorUrls.append(node)
 
   def contains(self, url):
     for node in self.urls:
@@ -39,3 +44,11 @@ class urlMap:
         content += link + "\n"
       file.write(content)
       file.close()
+
+  def writeUrlsWithErrors(self, filename):
+    file = open(filename, "w")
+    content = ""
+    for url in self.errorUrls:
+      content += url.getUrl() + ": " + url.getLinks()[0] + "\n"
+    file.write(content)
+    file.close()

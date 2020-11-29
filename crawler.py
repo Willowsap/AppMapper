@@ -66,3 +66,6 @@ class crawler:
 
   def writeMapFolder(self, folderName):
     self.map.writeToFolder(folderName)
+
+  def writeErrors(self, fileName):
+    self.map.writeUrlsWithErrors(fileName)
