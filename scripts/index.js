@@ -1,4 +1,4 @@
-anychart.data.loadJsonFile('example.json', function (data) {
+anychart.data.loadJsonFile('https://student2.cs.appstate.edu/sapphirewe/AppMapper/scripts/data.json', function (data) {
   // create a chart from the loaded data
   var chart = anychart.graph(data);
 

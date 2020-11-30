@@ -44,7 +44,7 @@ class urlMap:
 
   def writeToJsonFile(self):
     file = open("scripts/data.json", "w")
-    content = "{\n\t\"node\": ["
+    content = "{\n\t\"nodes\": ["
     for url in self.urls:
       content += "\n\t\t{\n\t\t\t\"id\": \""
       content += self.formatUrl(url.getUrl())
