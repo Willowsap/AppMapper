@@ -1,7 +1,8 @@
 import os
 
 class urlMap:
-  def __init__(self):
+  def __init__(self, rootUrl):
+    self.rootUrl = rootUrl
     self.urls = []
     self.errorUrls = []
 
@@ -41,6 +42,31 @@ class urlMap:
     file.write(content)
     file.close()
 
+  def writeToJsonFile(self):
+    file = open("scripts/data.json", "w")
+    content = "{\n\t\"node\": ["
+    for url in self.urls:
+      content += "\n\t\t{\n\t\t\t\"id\": \""
+      content += self.formatUrl(url.getUrl())
+      content +="\"\n\t\t},"
+    content = content[:-1] #get rid of trailing comma
+    content += "\n\t],\n\t\"edges\": ["
+    for url in self.urls:
+      for link in url.getLinks():
+        link = self.rootUrl + link
+        if self.contains(link):
+          content += "\n\t\t { \"from\": \""
+          content += self.formatUrl(url.getUrl())
+          content += "\", \"to\": \""
+          content += self.formatUrl(link)
+          content += "\" },"
+    content = content[:-1] #get rid of trailing comma
+    content += "\n\t]\n}"
+    file.write(content)
+    file.close()
+
+  def formatUrl(self, url):
+    return url.replace("\r", "").replace("\n", "").replace("\"", "'")
 
   def writeToFile(self, filename):
     file = open(filename, "w")
@@ -58,7 +84,7 @@ class urlMap:
       file = open(folderName + "/" + fileName, "w")
       content = url.getUrl() + "\n\n"
       for link in url.getLinks():
-        content += link + "\n"
+        content += self.rootUrl + link + "\n"
       file.write(content)
       file.close()
 
