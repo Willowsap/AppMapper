@@ -69,3 +69,6 @@ class crawler:
 
   def writeErrors(self, fileName):
     self.map.writeUrlsWithErrors(fileName)
+  
+  def writeToWebFile(self):
+    self.map.writeToWebFile()

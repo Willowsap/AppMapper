@@ -25,6 +25,23 @@ class urlMap:
         newLinks.append(link)
     return newLinks
 
+  def writeToWebFile(self):
+    file = open("scripts/getData.js", "w")
+    content = "function getData() {\n\treturn {"
+    for url in self.urls:
+      content += "\n\t\t\"" + url.getUrl().replace("\r", "").replace("\n", "").replace("\"", "'") + "\" : ["
+      if len(url.getLinks()) == 0:
+        content += "\"\", "
+      else:
+        for link in url.getLinks():
+          content += "\"" + link.replace("\r", "").replace("\n", "").replace("\"", "'") + "\", "
+      content = content[:-2]
+      content += "],"
+    content += "\n\t}\n}"
+    file.write(content)
+    file.close()
+
+
   def writeToFile(self, filename):
     file = open(filename, "w")
     content = ""

@@ -1,3 +1,5 @@
 map
 map.txt
+errors.txt
+data.txt
 *.pyc
