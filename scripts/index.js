@@ -12,7 +12,7 @@
 let xmlhttp = new XMLHttpRequest();
 xmlhttp.onreadystatechange = function() {
   if (this.readyState == 4 && this.status == 200) {
-    document.getElementById("graphSection").appendChild(chart(JSON.parse(this.responseText)));
+    document.getElementById("container").appendChild(chart(JSON.parse(this.responseText)));
   }
 };
 xmlhttp.open("GET", "https://student2.cs.appstate.edu/sapphirewe/AppMapper/scripts/d3data.json", true);
