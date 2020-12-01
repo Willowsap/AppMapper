@@ -58,7 +58,6 @@ function chart(data) {
       .attr("cx", d => d.x)
       .attr("cy", d => d.y);
   });
-  invalidation.then(() => simulation.stop());
   return svg.node();
 }
 
