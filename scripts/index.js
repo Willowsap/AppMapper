@@ -19,6 +19,8 @@ xmlhttp.open("GET", "https://student2.cs.appstate.edu/sapphirewe/AppMapper/scrip
 xmlhttp.send();
 
 function chart(data) {
+  const height = window.innerHeight;
+  const width = window.innerWidth;
   const links = data.links.map(d => Object.create(d));
   const nodes = data.nodes.map(d => Object.create(d));
   const simulation = d3.forceSimulation(nodes)
@@ -79,4 +81,9 @@ drag = simulation => {
     .on("start", dragstarted)
     .on("drag", dragged)
     .on("end", dragended);
+}
+
+function color() {
+  const scale = d3.scaleOrdinal(d3.schemeCategory10);
+  return d => scale(d.group);
 }
