@@ -12,7 +12,7 @@
 let xmlhttp = new XMLHttpRequest();
 xmlhttp.onreadystatechange = function() {
   if (this.readyState == 4 && this.status == 200) {
-    chart(JSON.parse(this.responseText));
+    document.getElementById("graphSection").appendChild(chart(JSON.parse(this.responseText)));
   }
 };
 xmlhttp.open("GET", "https://student2.cs.appstate.edu/sapphirewe/AppMapper/scripts/d3data.json", true);
@@ -61,7 +61,7 @@ function chart(data) {
   return svg.node();
 }
 
-drag = simulation => {
+const drag = (simulation) => {
   function dragstarted(event) {
     if (!event.active) simulation.alphaTarget(0.3).restart();
     event.subject.fx = event.subject.x;
@@ -82,7 +82,7 @@ drag = simulation => {
     .on("end", dragended);
 }
 
-function color() {
+const color = () => {
   const scale = d3.scaleOrdinal(d3.schemeCategory10);
   return d => scale(d.group);
 }
