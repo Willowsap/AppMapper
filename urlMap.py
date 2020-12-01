@@ -1,4 +1,6 @@
 import os
+import networkx as nx
+import matplotlib.pyplot as plt
 
 class urlMap:
   def __init__(self, rootUrl):
@@ -25,6 +27,28 @@ class urlMap:
       if not self.contains(link) and link not in newLinks:
         newLinks.append(link)
     return newLinks
+
+  def genGraph(self):
+    G = nx.Graph()
+    G.add_nodes_from(self.genNodes())
+    G.add_edges_from(self.genEdges())
+    nx.draw(G, with_labels=False, font_weight='bold')
+    plt.show()
+
+  def genEdges(self):
+    edges = []
+    for url in self.urls:
+      for link in url.getLinks():
+        link = self.rootUrl + link
+        if self.contains(link): #and (self.formatUrl(link), self.formatUrl(url.getUrl())) not in edges:
+          edges.append((self.formatUrl(url.getUrl()), self.formatUrl(link)))
+    return edges
+  
+  def genNodes(self):
+    nodes = []
+    for url in self.urls:
+      nodes.append(url.getUrl())
+    return nodes
 
   def writeToWebFile(self):
     file = open("scripts/getData.js", "w")
@@ -54,12 +78,35 @@ class urlMap:
     for url in self.urls:
       for link in url.getLinks():
         link = self.rootUrl + link
-        if self.contains(link):
+        if self.conains(link):
           content += "\n\t\t { \"from\": \""
           content += self.formatUrl(url.getUrl())
           content += "\", \"to\": \""
           content += self.formatUrl(link)
           content += "\" },"
+    content = content[:-1] #get rid of trailing comma
+    content += "\n\t]\n}"
+    file.write(content)
+    file.close()
+  
+  def writeToJsonFileForD3(self):
+    file = open("scripts/d3data.json", "w")
+    content = "{\n\t\"nodes\": ["
+    for url in self.urls:
+      content += "\n\t\t{ \"id\": \""
+      content += self.formatUrl(url.getUrl())
+      content +="\", \"group\": 1},"
+    content = content[:-1] #get rid of trailing comma
+    content += "\n\t],\n\t\"links\": ["
+    for url in self.urls:
+      for link in url.getLinks():
+        link = self.rootUrl + link
+        if self.contains(link):
+          content += "\n\t\t { \"source\": \""
+          content += self.formatUrl(url.getUrl())
+          content += "\", \"target\": \""
+          content += self.formatUrl(link)
+          content += "\", \"value\": 1 },"
     content = content[:-1] #get rid of trailing comma
     content += "\n\t]\n}"
     file.write(content)

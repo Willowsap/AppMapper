@@ -72,20 +72,8 @@ class crawler:
         newList.append(link)
     return newList
 
-  def writeMapFile(self, fileName):
-    self.map.writeToFile(fileName)
-
-  def writeMapFolder(self, folderName):
-    self.map.writeToFolder(folderName)
-
-  def writeErrors(self, fileName):
-    self.map.writeUrlsWithErrors(fileName)
-  
-  def writeToWebFile(self):
-    self.map.writeToWebFile()
-  
-  def writeToJsonFile(self):
-    self.map.writeToJsonFile()
+  def getMap(self):
+    return self.map
 
   def addRoot(self, links):
     for link in links:
