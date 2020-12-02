@@ -46,7 +46,7 @@ class crawler:
     if url == self.rootUrl:
       return page
     else:
-      return self.removeHeader(page)
+      return self.removeHeaderAndFooter(page)
 
   def allowed(self, links, parents):
     newLinks = []
@@ -57,7 +57,6 @@ class crawler:
 
   def findLinks(self, contents):
     newLinks = []
-    contents = self.removeHeader(contents)
     parts = contents.split("<a href=\"")
     del parts[0]
     for p in parts:
@@ -94,7 +93,7 @@ class crawler:
       newLinks.append(self.rootUrl + link)
     return newLinks
   
-  def removeHeader(self, page):
+  def removeHeaderAndFooter(self, page):
     parts = page.split("<!-- Begin Header Area -->")
     if len(parts) < 2:
       return page
@@ -102,4 +101,8 @@ class crawler:
     afterHeader = header.split("<!-- End Header Area -->")
     if len(afterHeader) < 2:
       return page
-    return afterHeader[1]
+    lowerPage = afterHeader[1]
+    lowerPageParts = lowerPage.split("<!-- Begin Footer -->")
+    if len(lowerPageParts) < 2:
+      return lowerPage
+    return lowerPageParts[0]
