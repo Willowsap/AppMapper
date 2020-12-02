@@ -53,7 +53,6 @@ function chart(data) {
       .attr("y1", d => d.source.y)
       .attr("x2", d => d.target.x)
       .attr("y2", d => d.target.y);
-
     node
       .attr("cx", d => d.x)
       .attr("cy", d => d.y);

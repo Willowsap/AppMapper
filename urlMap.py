@@ -3,8 +3,7 @@ import networkx as nx
 import matplotlib.pyplot as plt
 
 class urlMap:
-  def __init__(self, rootUrl):
-    self.rootUrl = rootUrl
+  def __init__(self):
     self.urls = []
     self.errorUrls = []
 
@@ -39,7 +38,6 @@ class urlMap:
     edges = []
     for url in self.urls:
       for link in url.getLinks():
-        link = self.rootUrl + link
         if self.contains(link): #and (self.formatUrl(link), self.formatUrl(url.getUrl())) not in edges:
           edges.append((self.formatUrl(url.getUrl()), self.formatUrl(link)))
     return edges
@@ -49,20 +47,26 @@ class urlMap:
     for url in self.urls:
       nodes.append(url.getUrl())
     return nodes
-
-  def writeToWebFile(self):
-    file = open("scripts/getData.js", "w")
-    content = "function getData() {\n\treturn {"
+  
+  def writeToJsonFileForD3(self):
+    file = open("scripts/d3data.json", "w")
+    content = "{\n\t\"nodes\": ["
     for url in self.urls:
-      content += "\n\t\t\"" + url.getUrl().replace("\r", "").replace("\n", "").replace("\"", "'") + "\" : ["
-      if len(url.getLinks()) == 0:
-        content += "\"\", "
-      else:
-        for link in url.getLinks():
-          content += "\"" + link.replace("\r", "").replace("\n", "").replace("\"", "'") + "\", "
-      content = content[:-2]
-      content += "],"
-    content += "\n\t}\n}"
+      content += "\n\t\t{ \"id\": \""
+      content += self.formatUrl(url.getUrl())
+      content +="\", \"group\": 1},"
+    content = content[:-1] #get rid of trailing comma
+    content += "\n\t],\n\t\"links\": ["
+    for url in self.urls:
+      for link in url.getLinks():
+        if self.contains(link):
+          content += "\n\t\t { \"source\": \""
+          content += self.formatUrl(url.getUrl())
+          content += "\", \"target\": \""
+          content += self.formatUrl(link)
+          content += "\", \"value\": 1 },"
+    content = content[:-1] #get rid of trailing comma
+    content += "\n\t]\n}"
     file.write(content)
     file.close()
 
@@ -77,7 +81,6 @@ class urlMap:
     content += "\n\t],\n\t\"edges\": ["
     for url in self.urls:
       for link in url.getLinks():
-        link = self.rootUrl + link
         if self.conains(link):
           content += "\n\t\t { \"from\": \""
           content += self.formatUrl(url.getUrl())
@@ -86,40 +89,6 @@ class urlMap:
           content += "\" },"
     content = content[:-1] #get rid of trailing comma
     content += "\n\t]\n}"
-    file.write(content)
-    file.close()
-  
-  def writeToJsonFileForD3(self):
-    file = open("scripts/d3data.json", "w")
-    content = "{\n\t\"nodes\": ["
-    for url in self.urls:
-      content += "\n\t\t{ \"id\": \""
-      content += self.formatUrl(url.getUrl())
-      content +="\", \"group\": 1},"
-    content = content[:-1] #get rid of trailing comma
-    content += "\n\t],\n\t\"links\": ["
-    for url in self.urls:
-      for link in url.getLinks():
-        link = self.rootUrl + link
-        if self.contains(link):
-          content += "\n\t\t { \"source\": \""
-          content += self.formatUrl(url.getUrl())
-          content += "\", \"target\": \""
-          content += self.formatUrl(link)
-          content += "\", \"value\": 1 },"
-    content = content[:-1] #get rid of trailing comma
-    content += "\n\t]\n}"
-    file.write(content)
-    file.close()
-
-  def formatUrl(self, url):
-    return url.replace("\r", "").replace("\n", "").replace("\"", "'")
-
-  def writeToFile(self, filename):
-    file = open(filename, "w")
-    content = ""
-    for url in self.urls:
-      content += url.getUrl() + "\n"
     file.write(content)
     file.close()
 
@@ -131,10 +100,18 @@ class urlMap:
       file = open(folderName + "/" + fileName, "w")
       content = url.getUrl() + "\n\n"
       for link in url.getLinks():
-        content += self.rootUrl + link + "\n"
+        content += link + "\n"
       file.write(content)
       file.close()
-
+      
+  def writeUrlsToFile(self, filename):
+    file = open(filename, "w")
+    content = ""
+    for url in self.urls:
+      content += url.getUrl() + "\n"
+    file.write(content)
+    file.close()
+  
   def writeUrlsWithErrors(self, filename):
     file = open(filename, "w")
     content = ""
@@ -142,3 +119,6 @@ class urlMap:
       content += url.getUrl() + ": " + url.getLinks()[0] + "\n"
     file.write(content)
     file.close()
+
+  def formatUrl(self, url):
+    return url.replace("\r", "").replace("\n", "").replace("\"", "'")

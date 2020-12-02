@@ -4,31 +4,31 @@ import urllib2
 
 class crawler:
   def __init__(self, rootUrl):
-    self.map = urlMap(rootUrl)
+    self.map = urlMap()
     self.rootUrl = rootUrl
   
   def printData(self, data):
     print(self.getPage(data))
   
   def startCrawling(self):
-    self.crawl(self.rootUrl)
+    self.crawl(self.rootUrl, [])
 
-  def crawl(self, url):
-    while (url[-1] == '/'):
-      url = url[0:-1]
-    url = url.replace(" ", "%20")
+  def crawl(self, url, parents):
     if self.map.contains(url):
       return
+    #print(url)
     page = self.getPage(url)
+    newParents = list(parents)
+    newParents.append(url)
     if page[0:5] == "ERROR":
       self.map.addUrl(node(url, [page]))
       return
-    links = self.formatLinks(self.removeDuplicates(self.findLinks(page)))
+    links = self.allowed(self.formatLinks(self.removeDuplicates(self.findLinks(page))), parents)
     self.map.addUrl(node(url, links))
     newLinks = self.map.newLinks(links)
     if len(newLinks) > 0:
       for link in newLinks:
-        self.crawl(self.rootUrl + link)
+        self.crawl(link, newParents)
     else:
       return
 
@@ -45,14 +45,23 @@ class crawler:
       page = "ERROR-UNKNOWN"
     return page
 
+  def allowed(self, links, parents):
+    newLinks = []
+    for link in links:
+      if link not in parents:
+        newLinks.append(link)
+    return newLinks
+
   def findLinks(self, contents):
-    links = []
+    newLinks = []
     parts = contents.split("<a href=\"")
     del parts[0]
     for p in parts:
       if p[0] == "/":
-        links.append(p.split("\">")[0])
-    return links
+        newLinks.append((p.split("\">")[0]))
+    newLinks = self.addRoot(newLinks)
+    #print(newLinks)
+    return newLinks
   
   def formatLinks(self, links):
     formattedLinks = []
@@ -76,6 +85,7 @@ class crawler:
     return self.map
 
   def addRoot(self, links):
+    newLinks = []
     for link in links:
-      link = self.rootUrl + link
-    return links
+      newLinks.append(self.rootUrl + link)
+    return newLinks
