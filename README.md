@@ -11,3 +11,5 @@ The program also outputs a file called errors.txt which shows which webpages pro
 The map in the webpage is still going through a refinement process as network mapping softwares can be difficult to work with. Thank you for your patience.
 
 For questions or comments, email Willow Sapphire at sapphirewe@appstate.edu
+
+For those receiving this as a zipped archive. The repository is at https://github.com/Willowsap/AppMapper
