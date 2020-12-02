@@ -1,0 +1,11 @@
+https://www.appstate.edu/_documents/economic-value-fact-sheet.pdf"%20target="_blank: ERROR-HTTP: 404
+https://www.appstate.edu/academics/majors/"%20class="active: ERROR-HTTP: 404
+https://www.appstate.edu/academics/minors/"%20class="active: ERROR-HTTP: 404
+https://www.appstate.edu/academics/graduate/"%20class="active: ERROR-HTTP: 404
+https://www.appstate.edu/academics/gradcerts/"%20class="active: ERROR-HTTP: 404
+https://www.appstate.edu/academics/doctoral"%20class="active: ERROR-HTTP: 404
+https://www.appstate.edu/academics/all"%20class="active: ERROR-HTTP: 404
+https://www.appstate.edu/academics/majors/id/hospitality-tourism: ERROR-HTTP: 404
+https://www.appstate.edu/https:/www.linkedin.com/groups/12009032
+: ERROR-HTTP: 404
+https://www.appstate.edu/htp:/appsummer.org: ERROR-HTTP: 404
