@@ -102,7 +102,7 @@ class crawler:
     if len(afterHeader) < 2:
       return page
     lowerPage = afterHeader[1]
-    lowerPageParts = lowerPage.split("<!-- Begin Footer -->")
+    lowerPageParts = lowerPage.split("<!--Begin Footer -->")
     if len(lowerPageParts) < 2:
       return lowerPage
     return lowerPageParts[0]
