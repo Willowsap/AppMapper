@@ -122,3 +122,4 @@ class urlMap:
 
   def formatUrl(self, url):
     return url.replace("\r", "").replace("\n", "").replace("\"", "'")
+  

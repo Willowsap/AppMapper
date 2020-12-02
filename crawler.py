@@ -43,7 +43,10 @@ class crawler:
       page = "ERROR-URL: " + str(e.reason)
     except Exception:
       page = "ERROR-UNKNOWN"
-    return page
+    if url == self.rootUrl:
+      return page
+    else:
+      return self.removeHeader(page)
 
   def allowed(self, links, parents):
     newLinks = []
@@ -54,6 +57,7 @@ class crawler:
 
   def findLinks(self, contents):
     newLinks = []
+    contents = self.removeHeader(contents)
     parts = contents.split("<a href=\"")
     del parts[0]
     for p in parts:
@@ -89,3 +93,13 @@ class crawler:
     for link in links:
       newLinks.append(self.rootUrl + link)
     return newLinks
+  
+  def removeHeader(self, page):
+    parts = page.split("<!-- Begin Header Area -->")
+    if len(parts) < 2:
+      return page
+    header = parts[1]
+    afterHeader = header.split("<!-- End Header Area -->")
+    if len(afterHeader) < 2:
+      return page
+    return afterHeader[1]
