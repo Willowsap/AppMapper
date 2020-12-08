@@ -1,14 +1,3 @@
-/*anychart.data.loadJsonFile('https://student2.cs.appstate.edu/sapphirewe/AppMapper/scripts/data.json', function (data) {
-  // create a chart from the loaded data
-  var chart = anychart.graph(data);
-
-  // set the title
-  chart.title("Appstate.edu URL Map");
-
-  // draw the chart
-  chart.container("container").draw();
-})*/
-
 let xmlhttp = new XMLHttpRequest();
 xmlhttp.onreadystatechange = function() {
   if (this.readyState == 4 && this.status == 200) {
@@ -18,13 +7,9 @@ xmlhttp.onreadystatechange = function() {
 xmlhttp.open("GET", "https://student2.cs.appstate.edu/sapphirewe/AppMapper/scripts/d3data.json", true);
 xmlhttp.send();
 
-// function populateData() {
-//   document.getElementById("container").appendChild(chart(getData()));
-// }
-
 function chart(data) {
-  const height = window.innerHeight;
-  const width = window.innerWidth;
+  const height = window.innerHeight - window.innerHeight * 0.1;
+  const width = window.innerWidth - window.innerWidth * 0.1;
   const links = data.links.map(d => Object.create(d));
   const nodes = data.nodes.map(d => Object.create(d));
   const simulation = d3.forceSimulation(nodes)
@@ -138,5 +123,3 @@ const color = () => {
   const scale = d3.scaleOrdinal(d3.schemeCategory10);
   return d => scale(d.group);
 }
-
-//document.getElementById("container").appendChild(chart(getData()));

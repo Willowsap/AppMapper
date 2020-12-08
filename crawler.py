@@ -16,7 +16,6 @@ class crawler:
   def crawl(self, url, parents):
     if self.map.contains(url):
       return
-    #print(url)
     page = self.getPage(url)
     newParents = list(parents)
     newParents.append(url)
